@@ -1,0 +1,103 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+button {
+  background-color: transparent;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+.clearfix::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+#_2048-content {
+  width: 600px;
+  height: 400px;
+  margin: 0 auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#_2048-content #menu {
+  width: 200px;
+  text-align: left;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: hidden;
+}
+#_2048-content #menu .game-button {
+  box-sizing: content-box;
+  display: block;
+  height: 40px;
+  width: 120px;
+  font-size: 20px;
+  font-weight: 800;
+  border: 5px solid #a8a8a8;
+  line-height: 1;
+  padding: 0 20px;
+  border-radius: 10px;
+  background-color: #f76421;
+  color: #ffffff;
+  font-family: '微软雅黑';
+  cursor: pointer;
+}
+#_2048-content #menu #score-box {
+  display: block;
+  margin-top: 15px;
+  margin-left: 18px;
+  line-height: 1;
+  align-self: flex-start;
+  font-size: 18px;
+}
+#_2048-content #content-right {
+  width: 315px;
+  height: 315px;
+  position: relative;
+}
+#_2048-content .items-base,
+#_2048-content #items-true {
+  width: 285px;
+  height: 285px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: space-between;
+  border-radius: 5px;
+  border: 15px solid #b9aea2;
+  background-color: #b9aea2;
+}
+#_2048-content .items-base .items,
+#_2048-content #items-true .items {
+  width: 60px;
+  height: 60px;
+  background-color: #cac1b4;
+  border-radius: 5px;
+  color: #766f66;
+  font-size: 24px;
+  text-align: center;
+  line-height: 60px;
+  font-weight: 800;
+}
+#_2048-content #items-true {
+  position: absolute;
+  background-color: transparent;
+  top: 0;
+  left: 0;
+  display: block;
+}
+#_2048-content #items-true .items {
+  opacity: 1;
+  position: absolute;
+  transition: all 0.3s linear;
+}
