@@ -1085,6 +1085,200 @@ _2048Item.prototype.bindKeyEvent = function(){
   ,false);
 }
 
+
+
+
+// //touchStart事件
+// _2048Item.prototype.touchStartEvent = function(ev){
+//   //TODO
+//   let event = ev||window.event
+//   console.log(event);
+// }
+// //touchEnd事件
+// _2048Item.prototype.touchEndEvent = function(ev){
+//   let event = ev||window.event
+//   console.log(event);
+// }
+
+_2048Item.prototype.touchEvent = function(){
+  const LENGTH = 50
+  const TIMEHANDLER = 400
+  let timerTurn = true
+  let touchTurn = false
+  let touchTurnTimer = null
+  let startX = null
+  let startY = null
+  let endX = null
+  let endY = null
+  let changeX = null
+  let changeY = null
+  let change = null
+  function touchStartEvent(ev){
+    let event = ev||window.event
+    startX = event.touches[0].clientX
+    startY = event.touches[0].clientY
+    touchTurn = true
+    // clearTimeout(touchTurnTimer)
+    touchTurnTimer = setTimeout(()=>{
+      touchTurn = false
+    },TIMEHANDLER)
+  }
+
+  function touchEndEvent(ev){
+    let event = ev||window.event
+    // console.log(event);
+    // console.log(!touchTurn&&!timerTurn);
+    console.log('touchTurn',touchTurn);
+    console.log('timerTurn',timerTurn);
+    if(!touchTurn||!timerTurn){
+      // return 0;
+      console.log('无法接受滑屏输入');
+      return
+    }
+    timerTurn = false;
+    touchTurn = false;
+    setTimeout(()=>{
+      timerTurn = true
+    },TIMEHANDLER)
+    // console.log(endX);
+    endX = event.changedTouches[0].clientX
+    endY = event.changedTouches[0].clientY
+    // console.log(endY);
+    changeX = endX - startX
+    changeY = endY - startY
+    change = Math.max(Math.abs(changeX),Math.abs(changeY))
+    // console.log(change);
+    console.log(Math.sign(changeX));
+    console.log(Math.sign(changeY));
+    if(change>=LENGTH){
+      if(Math.abs(changeX)>Math.abs(changeY)){
+        switch(Math.sign(changeX)){
+          case 1:{
+            this.moveFunction('right')
+            // console.log('滑动方向为右');
+            break;
+          }
+          case -1:{
+            this.moveFunction('left')
+            // console.log('滑动方向为左');
+            break;
+          }
+        }
+      }
+      else{
+        switch(Math.sign(changeY)){
+          case 1:{
+            this.moveFunction('down')
+            // console.log('滑动方向为下');
+            break;
+          }
+          case -1:{
+            this.moveFunction('up')
+            // console.log('滑动方向为上');
+            break;
+          }
+        }
+      }
+    }
+  }
+  document.addEventListener('touchstart',touchStartEvent.bind(this)
+  ,false)
+  document.addEventListener('touchend',touchEndEvent.bind(this)
+  ,false)
+
+}
+
+//方向触发事件
+_2048Item.prototype.moveFunction = function(direction){
+  switch(direction){
+    case 'up':{
+      setTimeout(()=>{
+        this.calculateCombine('up')
+        this.calculateMove('up')
+          //设置定时器为400ms，保证在前端的动画效果完毕后再生成，保证正常游戏正常流程和视觉效果
+          setTimeout(()=>{
+            //当createFlag为true 表示允许生成新的元素，并将该标志设置为false，同时更新计算得分
+            if(this.createFlag)
+            {
+              this.randomItemCreate();
+              this.scoreSpan.innerHTML = this.getScore();
+              this.createFlag = false;
+            }
+          },400)
+      },10)
+      break;
+    }
+    case 'down':{
+      setTimeout(()=>{
+        this.calculateCombine('down')
+        this.calculateMove('down')
+        //设置定时器为400ms，保证在前端的动画效果完毕后再生成，保证正常游戏正常流程和视觉效果
+          setTimeout(()=>{
+            //当createFlag为true 表示允许生成新的元素，并将该标志设置为false，同时更新计算得分
+            if(this.createFlag)
+            {
+              this.randomItemCreate();
+              this.scoreSpan.innerHTML = this.getScore();
+              this.createFlag = false;
+            }
+          },400)
+      },10)
+      break;
+    }
+    case 'left':{
+      setTimeout(()=>{
+        this.calculateCombine('left')
+        this.calculateMove('left')
+          setTimeout(()=>{
+            //当createFlag为true 表示允许生成新的元素，并将该标志设置为false，同时更新计算得分
+            if(this.createFlag)
+            {
+              this.randomItemCreate();
+              this.createFlag = false;
+              this.scoreSpan.innerHTML = this.getScore();
+            }
+          },400)
+      },10)
+      break;
+    }
+    case 'right':{
+      setTimeout(()=>{
+        this.calculateCombine('right')
+        this.calculateMove('right')
+        //设置定时器为400ms，保证在前端的动画效果完毕后再生成，保证正常游戏正常流程和视觉效果
+          setTimeout(()=>{
+            //当createFlag为true 表示允许生成新的元素，并将该标志设置为false，同时更新计算得分
+            if(this.createFlag)
+            {
+              this.randomItemCreate();
+              this.scoreSpan.innerHTML = this.getScore();
+              this.createFlag = false;
+            }
+          },400)
+      },10)
+      break;
+    }
+  }
+}
+
+
+// _2048Item.prototype.bindTouchEndEvent = function(){
+//   this.touchEndEvent(ev,startX,startY)
+// }
+
+
+//绑定移动端滑屏事件
+_2048Item.prototype.bindTouchEvent = function(){
+  // document.addEventListener('touchstart',this.touchStartEvent.bind(this)
+  // ,false)
+  // document.addEventListener('touchend',this.touchEndEvent.bind(this)
+  // ,false)
+  this.touchEvent()
+}
+
+
+
+
 //scoreSpan的dom元素
 _2048Item.prototype.scoreSpan = null;
 
@@ -1103,6 +1297,7 @@ _2048Item.prototype.init = function () {
   this.bindScoreSpan();
   this.bindNewGameBtn();
   this.bindKeyEvent();
+  this.bindTouchEvent();
   this.scoreSpan.innerHTML = this.getScore()
   //4
   for (let i in this.Array) {
