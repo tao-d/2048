@@ -1181,10 +1181,16 @@ _2048Item.prototype.touchEvent = function(){
       }
     }
   }
+
+  function touchStopMove(ev){
+    let event = ev||window.event
+    event.preventDefault()
+  }
   document.addEventListener('touchstart',touchStartEvent.bind(this)
   ,false)
   document.addEventListener('touchend',touchEndEvent.bind(this)
   ,false)
+  document.addEventListener('touchmove',touchStopMove,{passive:false})
 
 }
 
